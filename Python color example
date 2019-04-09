@@ -1,0 +1,24 @@
+Example 7: EV3 color sensor in COL-COLOR mode and touch sensor
+When the EV3 color sensor is in COL-COLOR mode it tries to recognise the color of standard Lego bricks placed about 5-6mm in front of the sensor (the distance is critical) and returns a corresponding integer value between 0 (unknown) and 7 (brown). The program below reads the integer once per second, converts it into the corresponding text string using a tuple and displays the string in the console. Press the touch sensor button for at least a second to stop the program.
+
+To make the program speak the colors as well as displaying their text strings, uncomment the line highlighted in blue. This will slightly increase the time between measurements as I included a wait() function to ensure that the speech was not interrupted.
+
+#!/usr/bin/env python3
+# so that script can be run from Brickman
+
+from ev3dev.ev3 import *
+from time   import sleep
+
+# Connect EV3 color and touch sensors to any sensor ports
+cl = ColorSensor() 
+ts = TouchSensor()
+
+# Put the color sensor into COL-COLOR mode.
+cl.mode='COL-COLOR'
+
+colors=('unknown','black','blue','green','yellow','red','white','brown')
+while not ts.value():    # Stop program by pressing touch sensor button
+    print(colors[cl.value()])
+    #Sound.speak(colors[cl.value()]).wait()
+    sleep(1)
+Sound.beep()
